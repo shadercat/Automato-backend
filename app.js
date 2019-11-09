@@ -3,11 +3,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+
 
 var app = express();
+app.use(session({
+  secret: 'i need more beers',
+  resave: false,
+  saveUninitialized: false,
+  // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
+  store: new MongoStore({
+    url: 'mongodb://localhost:27017/sessions',
+  })
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,6 +30,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req, res, next) => {
+  res.append('Access-Control-Allow-Origin', ['*']);
+  res.append('Access-Control-Allow-Methods', 'GET,POST');
+  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
