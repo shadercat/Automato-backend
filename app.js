@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var apiRouter = require('./routes/api');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
@@ -31,13 +32,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  res.append('Access-Control-Allow-Origin', ['*']);
+  res.append('Access-Control-Allow-Origin', ['http://localhost:3001']);
   res.append('Access-Control-Allow-Methods', 'GET,POST');
   res.append('Access-Control-Allow-Headers', 'Content-Type');
+  res.append('Access-Control-Allow-Credentials', 'true');
   next();
 });
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

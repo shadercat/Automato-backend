@@ -5,7 +5,7 @@ var User = require('./models/userModel.js');
 
 // User API
 
-exports.createUser = function(userData){
+exports.createUser = function (userData) {
     var user = {
         name: userData.name,
         email: userData.email,
@@ -17,19 +17,18 @@ exports.createUser = function(userData){
     return new User(user).save()
 };
 
-exports.getUser = function(id) {
+exports.getUser = function (id) {
     return User.findOne(id)
 };
 
-exports.checkUser = function(userData) {
+exports.checkUser = function (userData) {
     return User
         .findOne({email: userData.email})
-        .then(function(doc){
-            if ( doc.password == hash(userData.password) ){
-                console.log("User password is ok");
+        .then(function (doc) {
+            if (doc && doc.password == hash(userData.password)) {
                 return Promise.resolve(doc)
             } else {
-                return Promise.reject("Error wrong")
+                return Promise.reject("access is denied")
             }
         })
 };
@@ -37,4 +36,4 @@ exports.checkUser = function(userData) {
 function hash(text) {
     return crypto.createHash('sha1')
         .update(text).digest('base64')
-};
+}
