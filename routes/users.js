@@ -39,7 +39,9 @@ router.post('/logout', function (req, res, next) {
     if (req.session.user) {
         delete req.session.user;
         console.log("logout");
-        res.send(responses.responseSuccessOk())
+        res.status(200).send(responses.responseSuccessOk());
+    } else {
+        res.send(responses.responseSuccessFail("already logout"));
     }
 });
 

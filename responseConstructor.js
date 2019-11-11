@@ -21,7 +21,7 @@ exports.responseAuthorizeFail = function (reason) {
 exports.responseSuccessOk = function () {
     return {
         success: true,
-        reason: none
+        reason: "none"
     }
 };
 exports.responseSuccessFail = function (reason) {

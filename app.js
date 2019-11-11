@@ -8,11 +8,11 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-
+var secrets = require('./secrets'); //this file doesn't exist in github, but there is a file example (secretExample)
 
 var app = express();
 app.use(session({
-  secret: 'i need more beers',
+  secret: secrets.sessionSecret,
   resave: false,
   saveUninitialized: false,
   // Место хранения можно выбрать из множества вариантов, это и БД и файлы и Memcached.
