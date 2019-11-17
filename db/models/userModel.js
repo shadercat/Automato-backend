@@ -10,17 +10,29 @@ var User = new mongoose.Schema({
         required: true
     },
     name : {
-        type: String
+        type: String,
+        default: "Username"
     },
     position_type : {
-        type: String
+        type: String,
+        default: "owner"
     },
     create_time: {
-        type: Date
+        type: Date,
+        default: Date.now()
     },
-    machines: [Number],
-    subscription_type: String,
-    comp_description: String
+    machines: {
+        type: [String],
+        default: []
+    },
+    subscription_type: {
+        type: String,
+        default: "default"
+    },
+    comp_description: {
+        type: String,
+        default: "Nothing there"
+    }
 });
 
 module.exports = mongoose.model('User', User);

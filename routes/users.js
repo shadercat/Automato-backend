@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var api = require('../db/dbConnnection');
-var responses = require('../responseConstructor');
+var responses = require('../responseFactory');
 
 
 router.post('/login', function (req, res, next) {
@@ -22,7 +22,7 @@ router.post('/login', function (req, res, next) {
 
 });
 
-router.post('/', function (req, res, next) {
+router.post('/register', function (req, res, next) {
     api.createUser(req.body)
         .then(function (result) {
             console.log("User created");
@@ -38,7 +38,6 @@ router.post('/', function (req, res, next) {
 router.post('/logout', function (req, res, next) {
     if (req.session.user) {
         delete req.session.user;
-        console.log("logout");
         res.status(200).send(responses.responseSuccessOk());
     } else {
         res.send(responses.responseSuccessFail("already logout"));

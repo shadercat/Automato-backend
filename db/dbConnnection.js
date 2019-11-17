@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var crypto = require('crypto');
 var db = mongoose.connect("mongodb://localhost:27017/automato");
 var User = require('./models/userModel.js');
+var Machine = require('./models/machineModel');
+var MachineLog = require('./models/machineLogModel');
 
 // User API
 
@@ -17,8 +19,9 @@ exports.createUser = function (userData) {
     return new User(user).save()
 };
 
-exports.getUser = function (id) {
-    return User.findOne(id)
+exports.getUserData = function (query) {
+    return User.findOne(query)
+        .select({'password': 0});
 };
 
 exports.checkUser = function (userData) {
@@ -28,12 +31,49 @@ exports.checkUser = function (userData) {
             if (doc && doc.password == hash(userData.password)) {
                 return Promise.resolve(doc)
             } else {
-                return Promise.reject("access is denied")
+                return Promise.reject("Email or password is wrong!")
             }
-        })
+        }).catch()
+};
+
+exports.updateUser = function (query, data) {
+    return User.findOneAndUpdate(query, data, {new: true});
 };
 
 function hash(text) {
     return crypto.createHash('sha1')
         .update(text).digest('base64')
 }
+
+// Machine API
+
+exports.createMachine = function (machineData) {
+    var machine = {
+        indet: machineData.intet,
+        code: machineData.code,
+        state: machineData.state,
+        prod_state: machineData.prod_state,
+        products: machineData.products
+    };
+    return new Machine(machine).save();
+};
+
+exports.getMachineData = function (query) {
+    return Machine.findOne(query);
+};
+
+exports.updateMachine = function (query, data) {
+    return Machine.findOneAndUpdate(query, data, {new: true});
+};
+
+// Machine Log API
+
+exports.setMachineLog = function (macData) {
+    let log = {
+        mac_indet: macData.mac_indet,
+        op_type: macData.op_type,
+        priority: macData.priority,
+        data: macData.data
+    };
+    return new MachineLog(log).save();
+};
