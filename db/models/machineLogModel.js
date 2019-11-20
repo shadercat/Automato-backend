@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var MachineLog = new mongoose.Schema({
-    mac_indet: {
+    mac_id: {
         type: String,
         required: true
     },

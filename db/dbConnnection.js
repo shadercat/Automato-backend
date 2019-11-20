@@ -49,7 +49,7 @@ function hash(text) {
 
 exports.createMachine = function (machineData) {
     var machine = {
-        indet: machineData.indet,
+        mac_id: machineData.mac_id,
         code: machineData.code,
         state: machineData.state,
         prod_state: machineData.prod_state,
@@ -80,7 +80,7 @@ exports.getMachinesData = function(query) {
 
 exports.setMachineLog = function (macData) {
     let log = {
-        mac_indet: macData.mac_indet,
+        mac_id: macData.mac_id,
         op_type: macData.op_type,
         priority: macData.priority,
         data: macData.data

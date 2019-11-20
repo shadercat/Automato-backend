@@ -19,7 +19,7 @@ exports.getUserData = function (req, res, next) {
 
 exports.getMachinesData = function (req, res, next) {
     api.getUserData({email: req.session.user.email}).lean().then((data) => {
-        api.getMachinesData({indet: {$in: data.machines}}).lean()
+        api.getMachinesData({mac_id: {$in: data.machines}}).lean()
             .then((result) => {
                 let macs = result.map(function (item) {
                     item.isOwner = (item.owner === req.session.user.db_id);
@@ -34,7 +34,7 @@ exports.getMachinesData = function (req, res, next) {
 };
 
 exports.unbindMachine = function (req, res, next) {
-    api.updateUser({_id: req.session.user.db_id}, {$pull: {machines: req.body.indet}}).lean()
+    api.updateUser({_id: req.session.user.db_id}, {$pull: {machines: req.body.mac_id}}).lean()
         .then((result) => {
             res.send(responses.responseSuccessOk());
         })
@@ -44,10 +44,10 @@ exports.unbindMachine = function (req, res, next) {
 };
 
 exports.bindMachine = function (req, res, next) {
-    api.getMachineData({indet: req.body.indet}).lean()
+    api.getMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
             if(result.code === req.body.code){
-                api.updateUser({_id: req.session.user.db_id}, {$push: {machines: req.body.indet}}).lean()
+                api.updateUser({_id: req.session.user.db_id}, {$push: {machines: req.body.mac_id}}).lean()
                     .then((result2) => {
                         res.send(responses.responseSuccessOk());
                     })
@@ -64,10 +64,10 @@ exports.bindMachine = function (req, res, next) {
 };
 
 exports.deleteMachineHistory = function (req, res, next) {
-    api.getMachineData({indet: req.body.indet}).lean()
+    api.getMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
-            if (result.ouwner === req.session.user.db_id) {
-                api.deleteMachineLogs({mac_indet: result.indet}).lean()
+            if (result.owner === req.session.user.db_id) {
+                api.deleteMachineLogs({mac_id: result.mac_id})
                     .then((result2) => {
                         res.send(responses.responseSuccessOk());
                     })
@@ -84,7 +84,7 @@ exports.deleteMachineHistory = function (req, res, next) {
 };
 
 exports.getMachineLogs = function (req, res, next) {
-    api.getMachineLogs({mac_indet: req.body.indet}).lean()
+    api.getMachineLogs({mac_id: req.body.mac_id}).lean()
         .then((result) => {
             res.send(responses.responseDataOk(result));
         })
