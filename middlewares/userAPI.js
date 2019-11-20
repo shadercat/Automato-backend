@@ -67,7 +67,7 @@ exports.deleteMachineHistory = function (req, res, next) {
     api.getMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
             if (result.owner === req.session.user.db_id) {
-                api.deleteMachineLogs({mac_id: result.mac_id})
+                api.deleteMachineLogs({mac_id: req.body.mac_id, is_resolved: {$in: [true, false]}})
                     .then((result2) => {
                         res.send(responses.responseSuccessOk());
                     })

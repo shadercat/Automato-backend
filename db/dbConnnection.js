@@ -83,15 +83,24 @@ exports.setMachineLog = function (macData) {
         mac_id: macData.mac_id,
         op_type: macData.op_type,
         priority: macData.priority,
+        is_resolved: macData.is_resolved,
         data: macData.data
     };
     return new MachineLog(log).save();
 };
 
 exports.deleteMachineLogs = function (query) {
-    return MachineLog.deleteMany({query});
+    return MachineLog.deleteMany(query);
 };
 
 exports.getMachineLogs = function (query) {
     return MachineLog.find(query);
+};
+
+exports.updateMachineLog = function (query, data) {
+    return MachineLog.findOneAndUpdate(query, data, {new: true});
+};
+
+exports.getMachineWarnings = function (machine_id) {
+    return MachineLog.find({mac_id: machine_id, priority: "warning"});
 };

@@ -9,4 +9,10 @@ router.put('/create', accessMid.withAuth, machineMiddleware.createNewMachine);
 
 router.delete('/delete', accessMid.withAuth, machineMiddleware.deleteMachine);
 
+router.post('/resolve', accessMid.withAuth, machineMiddleware.resolveLogWarning);
+
+router.post('/setoffline', machineMiddleware.setOffline);
+
+router.post('/setonline', machineMiddleware.setOnline);
+
 module.exports = router;
