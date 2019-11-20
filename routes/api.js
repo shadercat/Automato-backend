@@ -1,35 +1,22 @@
 var express = require('express');
 var router = express.Router();
-var responses = require('../responseFactory');
-var accessMid = require('../accessMid');
-var api = require('../db/dbConnnection');
+var accessMiddleware = require('../middlewares/accessMiddleware');
+var apiMiddleware = require('../middlewares/userAPI');
 
+// USER
+router.get('/authorized', accessMiddleware.withAuth, apiMiddleware.getIsAuthorized);
 
-router.get('/authorized', accessMid.withAuth, function (req, res, next) {
-    res.send(responses.responseAuthorizeOk());
-});
+router.get('/userdata', accessMiddleware.withAuth, apiMiddleware.getUserData);
 
-router.get('/userdata', accessMid.withAuth, function (req, res, next) {
-    api.getUserData({email: req.session.user.email}).then((data) => {
-        res.send(responses.responseDataOk(data));
-    });
-});
+// MACHINES
+router.get('/machines', accessMiddleware.withAuth, apiMiddleware.getMachinesData);
 
-router.get('/machines', accessMid.withAuth, function (req, res, next) {
-    api.getUserData({email: req.session.user.email}).then((data) => {
-        let machineArr = [];
-        data.machines.forEach(function (item, i, arr) {
-            let dt = api.getMachineData({ident: item});
-            machineArr = machineArr.concat([dt]);
-        });
-        res.send(responses.responseDataOk(machineArr));
-    });
-});
+router.post('/bindmachine', accessMiddleware.withAuth, apiMiddleware.bindMachine);
 
-router.post('/machinelog', accessMid.withAuth, function (req, res, next) {
+router.post('/unbindmachine', accessMiddleware.withAuth, apiMiddleware.unbindMachine);
 
-});
+router.delete('/deletemachistory', accessMiddleware.withAuth, apiMiddleware.deleteMachineHistory);
 
-
+router.get('/machinelog', accessMiddleware.withAuth, apiMiddleware.getMachineLogs);
 
 module.exports = router;

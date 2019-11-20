@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
-var db = mongoose.connect("mongodb://localhost:27017/automato");
+var db = mongoose.connect("mongodb://localhost:27017/automato", {useNewUrlParser: true, useFindAndModify: false});
 var User = require('./models/userModel.js');
 var Machine = require('./models/machineModel');
 var MachineLog = require('./models/machineLogModel');
@@ -49,21 +49,31 @@ function hash(text) {
 
 exports.createMachine = function (machineData) {
     var machine = {
-        indet: machineData.intet,
+        indet: machineData.indet,
         code: machineData.code,
         state: machineData.state,
         prod_state: machineData.prod_state,
-        products: machineData.products
+        products: machineData.products,
+        owner: machineData.owner
     };
     return new Machine(machine).save();
 };
 
 exports.getMachineData = function (query) {
-    return Machine.findOne(query);
+    return Machine.findOne(query)
+        .select({_id: 0});
 };
 
 exports.updateMachine = function (query, data) {
     return Machine.findOneAndUpdate(query, data, {new: true});
+};
+
+exports.deleteMachine = function (query) {
+    return Machine.deleteOne(query);
+};
+
+exports.getMachinesData = function(query) {
+    return Machine.find(query);
 };
 
 // Machine Log API
@@ -76,4 +86,12 @@ exports.setMachineLog = function (macData) {
         data: macData.data
     };
     return new MachineLog(log).save();
+};
+
+exports.deleteMachineLogs = function (query) {
+    return MachineLog.deleteMany({query});
+};
+
+exports.getMachineLogs = function (query) {
+    return MachineLog.find(query);
 };

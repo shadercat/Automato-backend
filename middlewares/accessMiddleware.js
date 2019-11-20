@@ -1,5 +1,5 @@
 var express = require('express');
-var responses = require('./responseFactory');
+var responses = require('../responseFactory');
 
 exports.withAuth = function (req, res, next) {
     if(req.session.user){
