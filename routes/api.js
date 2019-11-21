@@ -4,19 +4,19 @@ var accessMiddleware = require('../middlewares/accessMiddleware');
 var apiMiddleware = require('../middlewares/userAPI');
 
 // USER
-router.get('/authorized', accessMiddleware.withAuth, apiMiddleware.getIsAuthorized);
+router.get('/authorized', accessMiddleware.userAuth, apiMiddleware.getIsAuthorized);
 
-router.get('/userdata', accessMiddleware.withAuth, apiMiddleware.getUserData);
+router.get('/userdata', accessMiddleware.userAuth, apiMiddleware.getUserData);
 
 // MACHINES
-router.get('/machines', accessMiddleware.withAuth, apiMiddleware.getMachinesData);
+router.get('/machines', accessMiddleware.userAuth, apiMiddleware.getMachinesData);
 
-router.post('/bindmachine', accessMiddleware.withAuth, apiMiddleware.bindMachine);
+router.post('/bindmachine', accessMiddleware.userAuth, apiMiddleware.bindMachine);
 
-router.post('/unbindmachine', accessMiddleware.withAuth, apiMiddleware.unbindMachine);
+router.post('/unbindmachine', accessMiddleware.userAuth, apiMiddleware.unbindMachine);
 
-router.delete('/deletemachistory', accessMiddleware.withAuth, apiMiddleware.deleteMachineHistory);
+router.delete('/deletemachistory', accessMiddleware.userAuth, apiMiddleware.deleteMachineHistory);
 
-router.get('/machinelog', accessMiddleware.withAuth, apiMiddleware.getMachineLogs);
+router.get('/machinelog', accessMiddleware.userAuth, apiMiddleware.getMachineLogs);
 
 module.exports = router;

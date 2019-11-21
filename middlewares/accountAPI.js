@@ -23,7 +23,6 @@ exports.loginFunc = function (req, res, next) {
 exports.registerNewAccount = function (req, res, next) {
     api.createUser(req.body)
         .then(function (result) {
-            console.log("User created");
             res.send(responses.responseSuccessOk());
         })
         .catch(function (err) {

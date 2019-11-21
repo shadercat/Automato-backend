@@ -7,6 +7,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var machineApi = require('./routes/machine');
+var adminRouter = require('./routes/admin');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var secrets = require('./constants/secrets'); //this file doesn't exist in github repository, but there is a file example (secretExample)
@@ -43,6 +44,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/machine', machineApi);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

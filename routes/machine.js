@@ -5,11 +5,11 @@ var machineMiddleware = require('../middlewares/machineAPI');
 
 router.put('/log', machineMiddleware.saveLog);
 
-router.put('/create', accessMid.withAuth, machineMiddleware.createNewMachine);
+router.put('/create', accessMid.userAuth, machineMiddleware.createNewMachine);
 
-router.delete('/delete', accessMid.withAuth, machineMiddleware.deleteMachine);
+router.delete('/delete', accessMid.userAuth, machineMiddleware.deleteMachine);
 
-router.post('/resolve', accessMid.withAuth, machineMiddleware.resolveLogWarning);
+router.post('/resolve', accessMid.userAuth, machineMiddleware.resolveLogWarning);
 
 router.post('/setoffline', machineMiddleware.setOffline);
 

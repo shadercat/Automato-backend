@@ -114,7 +114,7 @@ exports.resolveLogWarning = function (req, res, next) {
                 .then((result2) => {
                     let isResolve = true;
                     result2.forEach(function (item, i, arr) {
-                        isResolve = isResolve && item;
+                        isResolve = isResolve && item.is_resolved;
                     });
                     if (isResolve) {
                         api.updateMachine({mac_id: result.mac_id}, {prod_state: "normal"}).lean()
