@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var accessMiddleware = require('../middlewares/accessMiddleware');
-var apiMiddleware = require('../middlewares/userAPI');
+var apiMiddleware = require('../middlewares/user');
 
 // USER
 router.get('/authorized', accessMiddleware.userAuth, apiMiddleware.getIsAuthorized);

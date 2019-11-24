@@ -13,5 +13,6 @@ var Admin = new mongoose.Schema({
         type: String,
         default: "default"
     },
-
 });
+
+module.exports = mongoose.model("Admin", Admin);

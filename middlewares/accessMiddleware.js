@@ -10,7 +10,7 @@ exports.userAuth = function (req, res, next) {
 };
 
 exports.adminAuth = function (req, res, next) {
-    if (req.session.user.admin) {
+    if (req.session.user && req.session.user.admin) {
         next();
     } else {
         res.send(responses.responseAuthorizeFail("access denied"));

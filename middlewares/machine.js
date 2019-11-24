@@ -50,7 +50,7 @@ exports.deleteMachine = function (req, res, next) {
 exports.saveLog = function (req, res, next) {
     api.getMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
-            if (result.code == req.body.code) {
+            if (result && result.code === req.body.code) {
                 if (req.body.priority === "warning") {
                     api.updateMachine({mac_id: req.body.mac_id}, {prod_state: "warning"}).exec();
                 }

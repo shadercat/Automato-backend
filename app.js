@@ -13,13 +13,14 @@ var MongoStore = require('connect-mongo')(session);
 var secrets = require('./constants/secrets'); //this file doesn't exist in github repository, but there is a file example (secretExample)
 var constants = require('./constants/paths');
 
+
 var app = express();
 app.use(session({
     secret: secrets.sessionSecret,
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
-        url: constants.urlToDatabase,
+        url: constants.urlToDatabaseSession
     })
 }));
 

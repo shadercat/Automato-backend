@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var accountMiddleware = require('../middlewares/accountAPI');
+var accountMiddleware = require('../middlewares/account');
 
 
 router.post('/login', accountMiddleware.loginFunc);

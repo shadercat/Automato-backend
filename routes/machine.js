@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var accessMid = require('../middlewares/accessMiddleware');
-var machineMiddleware = require('../middlewares/machineAPI');
+var machineMiddleware = require('../middlewares/machine');
 
 router.put('/log', machineMiddleware.saveLog);
 
