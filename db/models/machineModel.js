@@ -25,7 +25,7 @@ var Machine = new mongoose.Schema({
         default: "Machine"
     },
     owner: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     }
 });

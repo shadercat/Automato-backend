@@ -94,8 +94,33 @@ exports.deleteMachine = function (query) {
     return Machine.deleteOne(query);
 };
 
-exports.getMachinesData = function(query) {
+exports.getMachinesData = function (query) {
     return Machine.find(query);
+};
+
+exports.getMachinesDataAgr = function (query) {
+    return Machine.aggregate([
+        {$match: query},
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner_data"
+            }
+        },
+        {$unwind: "$owner_data"},
+        {
+            $project: {
+                owner_data: {
+                    machines: 0,
+                    subscription_type: 0,
+                    password: 0,
+                    __v: 0
+                }
+            }
+        }
+    ]);
 };
 
 // Machine Log API

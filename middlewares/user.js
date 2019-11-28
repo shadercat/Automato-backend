@@ -19,10 +19,12 @@ exports.getUserData = function (req, res, next) {
 
 exports.getMachinesData = function (req, res, next) {
     api.getUserData({email: req.session.user.email}).lean().then((data) => {
-        api.getMachinesData({mac_id: {$in: data.machines}}).lean()
+        api.getMachinesDataAgr({
+            mac_id: {$in: data.machines}
+        })
             .then((result) => {
                 let macs = result.map(function (item) {
-                    item.isOwner = (item.owner === req.session.user.db_id);
+                    item.isOwner = (item.owner.toString() === req.session.user.db_id);
                     return item;
                 });
                 res.send(responses.responseDataOk(macs));
@@ -46,7 +48,7 @@ exports.unbindMachine = function (req, res, next) {
 exports.bindMachine = function (req, res, next) {
     api.getMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
-            if(result.code === req.body.code){
+            if (result.code === req.body.code) {
                 api.updateUser({_id: req.session.user.db_id}, {$push: {machines: req.body.mac_id}}).lean()
                     .then((result2) => {
                         res.send(responses.responseSuccessOk());
