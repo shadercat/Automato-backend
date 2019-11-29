@@ -1,5 +1,6 @@
 var express = require('express');
 var responses = require('../responseFactory');
+const error = require("../constants/Errors");
 var api = require('../db/dbConnnection');
 
 // user api
@@ -66,10 +67,11 @@ exports.bindMachine = function (req, res, next) {
 };
 
 exports.deleteMachineHistory = function (req, res, next) {
-    api.getMachineData({mac_id: req.body.mac_id}).lean()
+    api.getMachineData({mac_id: req.query.mac_id}).lean()
         .then((result) => {
-            if (result.owner === req.session.user.db_id) {
-                api.deleteMachineLogs({mac_id: req.body.mac_id, is_resolved: {$in: [true, false]}})
+            if (result.owner.toString() === req.session.user.db_id) {
+                api.updateMachine({mac_id: req.query.mac_id}, {prod_state: "normal"}).exec();
+                api.deleteMachineLogs({mac_id: req.query.mac_id, is_resolved: {$in: [true, false]}})
                     .then((result2) => {
                         res.send(responses.responseSuccessOk());
                     })
@@ -77,7 +79,7 @@ exports.deleteMachineHistory = function (req, res, next) {
                         res.send(responses.responseSuccessFail(err));
                     })
             } else {
-                res.send(responses.responseSuccessFail("access denied"));
+                res.send(responses.responseSuccessFail(error.ACCESS_DENIED));
             }
         })
         .catch((err) => {

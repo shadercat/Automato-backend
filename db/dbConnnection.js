@@ -5,6 +5,7 @@ var MachineLog = require('./models/machineLogModel');
 var Admin = require('./models/adminModel');
 var mongoose = require('mongoose');
 var paths = require('../constants/paths');
+const error = require('../constants/Errors');
 var db = mongoose.connect(paths.urlToDatabaseMain, {
     useNewUrlParser: true,
     useFindAndModify: false,
@@ -50,7 +51,7 @@ exports.checkUser = function (userData) {
             if (doc && doc.password == hash(userData.password)) {
                 return Promise.resolve(doc)
             } else {
-                return Promise.reject("Email or password is wrong!")
+                return Promise.reject(error.USER_DATA_WRONG)
             }
         }).catch()
 };
@@ -169,7 +170,7 @@ exports.checkAdmin = function (data) {
             if (doc && doc.password == hash(data.password)) {
                 return Promise.resolve(doc);
             } else {
-                return Promise.reject("Email or password is wrong!");
+                return Promise.reject(error.USER_DATA_WRONG);
             }
         }).catch()
 };

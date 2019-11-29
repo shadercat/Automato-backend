@@ -1,5 +1,6 @@
 var express = require('express');
 var responses = require('../responseFactory');
+const error = require("../constants/Errors");
 var api = require('../db/dbConnnection');
 
 exports.login = function (req, res, next) {
@@ -11,7 +12,7 @@ exports.login = function (req, res, next) {
                 req.session.user = {id: user._id, email: user.email, db_id: user._id, admin: true};
                 res.send(responses.responseAuthorizeOk());
             } else {
-                res.send(responses.responseAuthorizeFail('error'));
+                res.send(responses.responseAuthorizeFail(error.SERVER_ERROR));
             }
         })
         .catch(function (error) {
@@ -25,7 +26,7 @@ exports.logout = function (req, res, next) {
         delete req.session.user;
         res.status(200).send(responses.responseSuccessOk());
     } else {
-        res.send(responses.responseSuccessFail("already logout"));
+        res.send(responses.responseSuccessFail(error.UNAUTHORIZED));
     }
 };
 
@@ -35,7 +36,11 @@ exports.createNewAdmin = function (req, res, next) {
             res.send(responses.responseSuccessOk());
         })
         .catch((err) => {
-            res.send(responses.responseSuccessFail(err));
+            if (err.code === 11000) {
+                res.send(responses.responseSuccessFail(error.DUPLICATE_EMAIL));
+            } else {
+                res.send(responses.responseSuccessFail(error.SERVER_ERROR));
+            }
         })
 };
 
@@ -45,7 +50,7 @@ exports.getUserInfo = function (req, res, next) {
             res.send(responses.responseDataOk(doc))
         })
         .catch((err) => {
-            res.send(responses.responseDataFail(err));
+            res.send(responses.responseDataFail(error.NOT_FOUND));
         });
 };
 
@@ -55,7 +60,7 @@ exports.getMachineInfo = function (req, res, next) {
             res.send(responses.responseDataOk(result));
         })
         .catch((err) => {
-            res.send(responses.responseDataFail(err));
+            res.send(responses.responseDataFail(error.DATABASE_FAIL));
         })
 };
 
@@ -65,7 +70,7 @@ exports.getMachineLog = function (req, res, next) {
             res.send(responses.responseDataOk(result));
         })
         .catch((err) => {
-            res.send(responses.responseDataFail(err));
+            res.send(responses.responseDataFail(error.DATABASE_FAIL));
         })
 };
 

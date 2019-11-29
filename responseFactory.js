@@ -1,8 +1,9 @@
+const error = require("./constants/Errors");
 exports.responseAuthorizeOk = function () {
     return {
         auth: true,
         success: true,
-        reason: "none"
+        reason: error.FINE
     }
 };
 exports.responseAuthorizeFail = function (reason) {
@@ -16,7 +17,7 @@ exports.responseSuccessOk = function () {
     return {
         auth: undefined,
         success: true,
-        reason: "none"
+        reason: error.FINE
     }
 };
 exports.responseSuccessFail = function (reason) {
@@ -30,7 +31,7 @@ exports.responseDataOk = function (data) {
     return {
         auth: undefined,
         success: true,
-        reason: "none",
+        reason: error.FINE,
         data: data
     }
 };
