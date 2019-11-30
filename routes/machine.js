@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var accessMid = require('../middlewares/accessMiddleware');
-var machineMiddleware = require('../middlewares/machine');
+const express = require('express');
+const router = express.Router();
+const accessMid = require('../middlewares/accessMiddleware');
+const machineMiddleware = require('../middlewares/machine');
 
 router.put('/log', machineMiddleware.saveLog);
 

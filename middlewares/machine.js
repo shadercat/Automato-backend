@@ -1,7 +1,7 @@
-var express = require('express');
-var responses = require('../responseFactory');
+const express = require('express');
+const responses = require('../responseFactory');
 const error = require("../constants/Errors");
-var api = require('../db/dbConnnection');
+const api = require('../db/dbConnnection');
 
 exports.createNewMachine = function (req, res, next) {
     let data = req.body;

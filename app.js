@@ -1,20 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var apiRouter = require('./routes/api');
-var machineApi = require('./routes/machine');
-var adminRouter = require('./routes/admin');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
-var secrets = require('./constants/secrets'); //this file doesn't exist in github repository, but there is a file example (secretExample)
-var constants = require('./constants/paths');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const apiRouter = require('./routes/api');
+const machineApi = require('./routes/machine');
+const adminRouter = require('./routes/admin');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
+const secrets = require('./constants/secrets'); //this file doesn't exist in github repository, but there is a file example (secretExample)
+const constants = require('./constants/paths');
 
 
-var app = express();
+const app = express();
 app.use(session({
     secret: secrets.sessionSecret,
     resave: false,

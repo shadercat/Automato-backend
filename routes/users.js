@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var accountMiddleware = require('../middlewares/account');
+const express = require('express');
+const router = express.Router();
+const accountMiddleware = require('../middlewares/account');
 
 
 router.post('/login', accountMiddleware.loginFunc);

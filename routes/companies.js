@@ -1,6 +1,6 @@
-var express = require('express');
-var Middleware = require('../middlewares/companies');
-var router = express.Router();
+const express = require('express');
+const Middleware = require('../middlewares/companies');
+const router = express.Router();
 
 router.get('/companies', Middleware.getCompanies);
 

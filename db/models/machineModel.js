@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var Machine = new mongoose.Schema({
+const mongoose = require('mongoose');
+const Machine = new mongoose.Schema({
     mac_id: {
         type: String,
         unique: true,

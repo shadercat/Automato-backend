@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var adminMiddleware = require('../middlewares/admin');
-var accessMiddleware = require('../middlewares/accessMiddleware');
+const express = require('express');
+const router = express.Router();
+const adminMiddleware = require('../middlewares/admin');
+const accessMiddleware = require('../middlewares/accessMiddleware');
 
 router.post('/login', adminMiddleware.login);
 

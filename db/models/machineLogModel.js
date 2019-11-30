@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var MachineLog = new mongoose.Schema({
+const mongoose = require('mongoose');
+const MachineLog = new mongoose.Schema({
     mac_id: {
         type: String,
         required: true

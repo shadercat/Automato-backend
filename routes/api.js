@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var accessMiddleware = require('../middlewares/accessMiddleware');
-var apiMiddleware = require('../middlewares/user');
+const express = require('express');
+const router = express.Router();
+const accessMiddleware = require('../middlewares/accessMiddleware');
+const apiMiddleware = require('../middlewares/user');
 
 // USER
 router.get('/authorized', accessMiddleware.userAuth, apiMiddleware.getIsAuthorized);
