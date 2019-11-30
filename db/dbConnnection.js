@@ -83,8 +83,7 @@ exports.createMachine = function (machineData) {
 };
 
 exports.getMachineData = function (query) {
-    return Machine.findOne(query)
-        .select({_id: 0});
+    return Machine.findOne(query);
 };
 
 exports.updateMachine = function (query, data) {

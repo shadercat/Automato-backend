@@ -21,7 +21,7 @@ exports.getUserData = function (req, res, next) {
 exports.getMachinesData = function (req, res, next) {
     api.getUserData({email: req.session.user.email}).lean().then((data) => {
         api.getMachinesDataAgr({
-            mac_id: {$in: data.machines}
+            _id: {$in: data.machines}
         })
             .then((result) => {
                 let macs = result.map(function (item) {
@@ -37,32 +37,38 @@ exports.getMachinesData = function (req, res, next) {
 };
 
 exports.unbindMachine = function (req, res, next) {
-    api.updateUser({_id: req.session.user.db_id}, {$pull: {machines: req.body.mac_id}}).lean()
-        .then((result) => {
-            res.send(responses.responseSuccessOk());
+    api.getMachineData({mac_id: req.body.mac_id}).lean()
+        .then((result1) => {
+            api.updateUser({_id: req.session.user.db_id}, {$pull: {machines: result1._id}}).lean()
+                .then((result2) => {
+                    res.send(responses.responseSuccessOk());
+                })
+                .catch((err) => {
+                    res.send(responses.responseSuccessFail(error.SERVER_ERROR));
+                })
         })
         .catch((err) => {
-            res.send(err);
-        })
+            res.send(responses.responseSuccessFail(error.SERVER_ERROR));
+        });
 };
 
 exports.bindMachine = function (req, res, next) {
     api.getMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
             if (result.code === req.body.code) {
-                api.updateUser({_id: req.session.user.db_id}, {$push: {machines: req.body.mac_id}}).lean()
+                api.updateUser({_id: req.session.user.db_id}, {$push: {machines: result._id}}).lean()
                     .then((result2) => {
                         res.send(responses.responseSuccessOk());
                     })
                     .catch((err) => {
-                        res.send(responses.responseSuccessFail(err));
+                        res.send(responses.responseSuccessFail(error.SERVER_ERROR));
                     })
             } else {
-                res.send(responses.responseSuccessFail("access denied"))
+                res.send(responses.responseSuccessFail(error.ACCESS_DENIED))
             }
         })
         .catch((err) => {
-            res.send(responses.responseSuccessFail(err));
+            res.send(responses.responseSuccessFail(error.NOT_FOUND));
         })
 };
 
@@ -76,14 +82,14 @@ exports.deleteMachineHistory = function (req, res, next) {
                         res.send(responses.responseSuccessOk());
                     })
                     .catch((err) => {
-                        res.send(responses.responseSuccessFail(err));
+                        res.send(responses.responseSuccessFail(error.SERVER_ERROR));
                     })
             } else {
                 res.send(responses.responseSuccessFail(error.ACCESS_DENIED));
             }
         })
         .catch((err) => {
-            res.send(responses.responseSuccessFail(err));
+            res.send(responses.responseSuccessFail(error.SERVER_ERROR));
         });
 };
 

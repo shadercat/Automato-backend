@@ -4,7 +4,7 @@ const error = require('../constants/Errors');
 var responses = require('../responseFactory');
 
 exports.loginFunc = function (req, res, next) {
-    if (req.session.user) return res.send(responses.responseAuthorizeFail("already login"));
+    if (req.session.user) return res.send(responses.responseAuthorizeFail(error.ALREADY_LOGIN));
 
     api.checkUser(req.body)
         .then(function (user) {

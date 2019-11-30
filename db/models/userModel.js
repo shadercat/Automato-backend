@@ -22,7 +22,7 @@ var User = new mongoose.Schema({
         default: Date.now()
     },
     machines: {
-        type: [String],
+        type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Machines'}],
         default: []
     },
     subscription_type: {

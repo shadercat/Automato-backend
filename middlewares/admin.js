@@ -96,6 +96,7 @@ exports.getStatistic = function (req, res, next) {
         })
 };
 
+//TODO: implement user deletion
 exports.deleteUser = function (req, res, next) {
     api.deleteUser({email: req.body.email_to_del})
         .then((result) => {

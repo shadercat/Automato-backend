@@ -8,7 +8,7 @@ exports.createNewMachine = function (req, res, next) {
     data.owner = req.session.user.db_id;
     api.createMachine(data)
         .then((result) => {
-            api.updateUser({_id: req.session.user.db_id}, {$push: {machines: data.mac_id}}).lean()
+            api.updateUser({_id: req.session.user.db_id}, {$push: {machines: result._id}}).lean()
                 .then((res2) => {
                     res.send(responses.responseSuccessOk());
                 })
