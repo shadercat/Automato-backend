@@ -16,11 +16,11 @@ const constants = require('./constants/paths');
 
 const app = express();
 app.use(session({
-    secret: secrets.sessionSecret,
+    secret: process.env.SECRETSESSION,
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
-        url: constants.urlToDatabaseSession
+        url: process.env.DATABASESTRING
     })
 }));
 

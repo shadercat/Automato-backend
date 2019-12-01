@@ -2,6 +2,8 @@
   <configuration default="false" name="bin\www" type="NodeJSConfigurationType" path-to-js-file="bin/www" working-dir="$PROJECT_DIR$">
     <envs>
       <env name="DEBUG" value="automato-server:*" />
+      <env name="SECRETSESSION" value="i need more beers" />
+      <env name="DATABASESTRING" value="mongodb+srv://Tran2:Merespectwomen@cluster0-wnrfj.azure.mongodb.net/test?retryWrites=true&amp;w=majority" />
     </envs>
     <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSStartBrowserRunConfigurationExtension">
       <browser url="http://localhost:3000/" />

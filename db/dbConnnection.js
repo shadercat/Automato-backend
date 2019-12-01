@@ -6,7 +6,7 @@ var Admin = require('./models/adminModel');
 var mongoose = require('mongoose');
 var paths = require('../constants/paths');
 const error = require('../constants/Errors');
-var db = mongoose.connect(paths.urlToDatabaseMain, {
+var db = mongoose.connect(process.env.DATABASESTRING, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true
