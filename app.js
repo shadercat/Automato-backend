@@ -15,7 +15,7 @@ const constants = require('./constants/paths');
 
 const app = express();
 app.disable('x-powered-by');
-app.set('trust proxy', 1);
+app.enable('trust proxy');
 app.use(session({
     secret: process.env.SECRETSESSION,
     resave: false,
