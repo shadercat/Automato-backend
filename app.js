@@ -23,7 +23,7 @@ app.use(session({
     proxy: true,
     cookie: {
         secure: (process.env.SECURECOOKIE === "true"),
-        sameSite: 'none',
+        sameSite: process.env.SAMESITE,
         httpOnly: true
     },
     store: new MongoStore({
