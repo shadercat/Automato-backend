@@ -14,18 +14,20 @@ const constants = require('./constants/paths');
 
 
 const app = express();
+app.disable('x-powered-by');
+app.set('trust proxy', 1);
 app.use(session({
     secret: process.env.SECRETSESSION,
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({
-        url: process.env.DATABASESTRING
-    }),
     cookie: {
-        secure: 'auto',
+        secure: (process.env.SECURECOOKIE === "true"),
         sameSite: 'none',
         httpOnly: true
-    }
+    },
+    store: new MongoStore({
+        url: process.env.DATABASESTRING
+    })
 }));
 
 // view engine setup
