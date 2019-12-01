@@ -10,7 +10,6 @@ const machineApi = require('./routes/machine');
 const adminRouter = require('./routes/admin');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const secrets = require('./constants/secrets'); //this file doesn't exist in github repository, but there is a file example (secretExample)
 const constants = require('./constants/paths');
 
 
