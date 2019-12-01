@@ -20,6 +20,7 @@ app.use(session({
     secret: process.env.SECRETSESSION,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
         secure: (process.env.SECURECOOKIE === "true"),
         sameSite: 'none',
