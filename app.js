@@ -20,7 +20,12 @@ app.use(session({
     saveUninitialized: false,
     store: new MongoStore({
         url: process.env.DATABASESTRING
-    })
+    }),
+    cookie: {
+        secure: true,
+        sameSite: 'none',
+        httpOnly: true
+    }
 }));
 
 // view engine setup
