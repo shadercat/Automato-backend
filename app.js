@@ -22,7 +22,7 @@ app.use(session({
         url: process.env.DATABASESTRING
     }),
     cookie: {
-        secure: true,
+        secure: 'auto',
         sameSite: 'none',
         httpOnly: true
     }
