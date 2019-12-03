@@ -16,6 +16,14 @@ const MachineLog = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    descry: {
+        type: String,
+        default: "undefined"
+    },
+    date: {
+        type: Date,
+        default: Date.now()
+    },
     data: {
         type: mongoose.Schema.Types.Mixed,
     }

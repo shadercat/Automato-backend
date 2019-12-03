@@ -94,7 +94,7 @@ exports.deleteMachineHistory = function (req, res, next) {
 };
 
 exports.getMachineLogs = function (req, res, next) {
-    api.getMachineLogs({mac_id: req.body.mac_id}).lean()
+    api.getMachineLogs({mac_id: req.query.mac_id}).lean()
         .then((result) => {
             res.send(responses.responseDataOk(result));
         })

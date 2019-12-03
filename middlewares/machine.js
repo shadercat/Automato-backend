@@ -26,8 +26,10 @@ exports.createNewMachine = function (req, res, next) {
 };
 
 exports.deleteMachine = function (req, res, next) {
-    api.getMachineData({mac_id: req.query.mac_id}).lean()
+    api.getRawMachineData({mac_id: req.query.mac_id})
         .then((result1) => {
+            console.log(req.query);
+            console.log(result1);
             if (result1.owner.toString() === req.session.user.db_id && result1.code === req.query.code) {
                 api.deleteMachineLogs({mac_id: req.query.mac_id})
                     .then((result) => {
@@ -53,13 +55,15 @@ exports.deleteMachine = function (req, res, next) {
 };
 
 exports.saveLog = function (req, res, next) {
-    api.getMachineData({mac_id: req.body.mac_id}).lean()
+    api.getRawMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
             if (result && result.code === req.body.code) {
                 if (req.body.priority === "warning") {
                     api.updateMachine({mac_id: req.body.mac_id}, {prod_state: "warning"}).exec();
                 }
-                api.setMachineLog(req.body)
+                let data = req.body;
+                data.data = JSON.parse(req.body.data);
+                api.setMachineLog(data)
                     .then((doc) => {
                         res.send(responses.responseSuccessOk());
                     })
@@ -136,4 +140,7 @@ exports.resolveLogWarning = function (req, res, next) {
         .catch((err) => {
             res.send(responses.responseSuccessFail(err));
         });
+};
+exports.getMachineStatistic = function (req, res, next) {
+
 };

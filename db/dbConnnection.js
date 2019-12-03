@@ -77,13 +77,18 @@ exports.createMachine = function (machineData) {
         state: machineData.state,
         prod_state: machineData.prod_state,
         products: machineData.products,
-        owner: machineData.owner
+        owner: machineData.owner,
+        name: machineData.name
     };
     return new Machine(machine).save();
 };
 
 exports.getMachineData = function (query) {
-    return Machine.findOne(query);
+    return Machine.findOne(query).populate('owner', 'name position_type email').select({code: 0});
+};
+
+exports.getRawMachineData = function (query) {
+    return Machine.findOne(query).lean();
 };
 
 exports.updateMachine = function (query, data) {
@@ -112,6 +117,7 @@ exports.getMachinesDataAgr = function (query) {
         {$unwind: "$owner_data"},
         {
             $project: {
+                code: 0,
                 owner_data: {
                     machines: 0,
                     subscription_type: 0,
@@ -131,6 +137,7 @@ exports.setMachineLog = function (macData) {
         op_type: macData.op_type,
         priority: macData.priority,
         is_resolved: macData.is_resolved,
+        descry: macData.descry,
         data: macData.data
     };
     return new MachineLog(log).save();

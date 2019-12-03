@@ -3,7 +3,7 @@
     <envs>
       <env name="DEBUG" value="automato-server:*" />
       <env name="SECRETSESSION" value="i need more beers" />
-      <env name="DATABASESTRING" value="mongodb+srv://Tran2:Merespectwomen@cluster0-wnrfj.azure.mongodb.net/test?retryWrites=true&amp;w=majority" />
+      <env name="DATABASESTRING" value="mongodb://localhost:27017/automato?replicaSet=rs0" />
       <env name="SECURECOOKIE" value="false" />
       <env name="SAMESITE" value="none" />
     </envs>
