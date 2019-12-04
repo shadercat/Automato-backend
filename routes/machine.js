@@ -9,7 +9,9 @@ router.put('/create', accessMid.userAuth, machineMiddleware.createNewMachine);
 
 router.delete('/delete', accessMid.userAuth, machineMiddleware.deleteMachine);
 
-router.post('/resolve', accessMid.userAuth, machineMiddleware.resolveLogWarning);
+router.post('/logresolve', accessMid.userAuth, machineMiddleware.resolveLogWarning);
+
+router.post('/resolve', accessMid.userAuth, machineMiddleware.resolveWarning);
 
 router.post('/setoffline', machineMiddleware.setOffline);
 

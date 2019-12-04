@@ -12,7 +12,9 @@ router.get('/userdata', accessMiddleware.userAuth, apiMiddleware.getUserData);
 // MACHINES
 router.get('/machines', accessMiddleware.userAuth, apiMiddleware.getMachinesData);
 
-router.post('/machine', accessMiddleware.userAuth, adminMiddleware.getMachineInfo);
+router.get('/machine', accessMiddleware.userAuth, accessMiddleware.isOwnerOfMachine, adminMiddleware.getMachineInfo);
+
+router.get('/machinestat', accessMiddleware.userAuth, apiMiddleware.getMachineStatistic);
 
 router.post('/bindmachine', accessMiddleware.userAuth, apiMiddleware.bindMachine);
 

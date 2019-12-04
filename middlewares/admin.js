@@ -55,7 +55,7 @@ exports.getUserInfo = function (req, res, next) {
 };
 
 exports.getMachineInfo = function (req, res, next) {
-    api.getMachineData({mac_id: req.body.mac_id}).lean()
+    api.getMachineData({mac_id: req.query.mac_id}).lean()
         .then((result) => {
             res.send(responses.responseDataOk(result));
         })
@@ -98,7 +98,7 @@ exports.getStatistic = function (req, res, next) {
 
 //TODO: implement user deletion
 exports.deleteUser = function (req, res, next) {
-    api.deleteUser({email: req.body.email_to_del})
+    api.deleteUser({email: req.body.email})
         .then((result) => {
             res.send(responses.responseDataOk(result));
         })
@@ -108,10 +108,10 @@ exports.deleteUser = function (req, res, next) {
 };
 
 exports.deleteMachine = function (req, res, next) {
-    api.deleteMachine({mac_id: req.body.mac_id_to_del})
-        .then((result) => {
-            api.deleteMachineLogs({mac_id: req.body.mac_id_to_del})
-                .then((result2) => {
+    api.deleteMachineLogs({mac_id: req.query.mac_id})
+        .then((result2) => {
+            api.deleteMachine({mac_id: req.query.mac_id})
+                .then((result) => {
                     res.send(responses.responseDataOk(result));
                 })
                 .catch((err) => {

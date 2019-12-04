@@ -158,6 +158,26 @@ exports.updateMachineLog = function (query, data) {
 exports.getMachineWarnings = function (machine_id) {
     return MachineLog.find({mac_id: machine_id, priority: "warning"});
 };
+exports.getLogsStatistic = function (machine_id) {
+    return MachineLog.aggregate([
+        {
+            $match: {mac_id: machine_id, op_type: "sell"}
+        },
+        {
+            $group: {
+                _id: {$month: "$date"},
+                average: {$avg: "$data.price"}
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                month: "$_id",
+                average: "$average"
+            }
+        }
+    ]);
+};
 
 // ADMIN API
 

@@ -37,15 +37,19 @@ exports.getMachinesData = function (req, res, next) {
 };
 
 exports.unbindMachine = function (req, res, next) {
-    api.getMachineData({mac_id: req.body.mac_id}).lean()
+    api.getRawMachineData({mac_id: req.body.mac_id}).lean()
         .then((result1) => {
-            api.updateUser({_id: req.session.user.db_id}, {$pull: {machines: result1._id}}).lean()
-                .then((result2) => {
-                    res.send(responses.responseSuccessOk());
-                })
-                .catch((err) => {
-                    res.send(responses.responseSuccessFail(error.SERVER_ERROR));
-                })
+            if (result1.owner.toString() !== req.session.user.db_id) {
+                api.updateUser({_id: req.session.user.db_id}, {$pull: {machines: result1._id}}).lean()
+                    .then((result2) => {
+                        res.send(responses.responseSuccessOk());
+                    })
+                    .catch((err) => {
+                        res.send(responses.responseSuccessFail(error.SERVER_ERROR));
+                    })
+            } else {
+                res.send(responses.responseSuccessFail(error.OPERATION_DENIED));
+            }
         })
         .catch((err) => {
             res.send(responses.responseSuccessFail(error.SERVER_ERROR));
@@ -53,10 +57,10 @@ exports.unbindMachine = function (req, res, next) {
 };
 
 exports.bindMachine = function (req, res, next) {
-    api.getMachineData({mac_id: req.body.mac_id}).lean()
+    api.getRawMachineData({mac_id: req.body.mac_id}).lean()
         .then((result) => {
             if (result.code === req.body.code) {
-                api.updateUser({_id: req.session.user.db_id}, {$push: {machines: result._id}}).lean()
+                api.updateUser({_id: req.session.user.db_id}, {$addToSet: {machines: result._id}}).lean()
                     .then((result2) => {
                         res.send(responses.responseSuccessOk());
                     })
@@ -100,5 +104,15 @@ exports.getMachineLogs = function (req, res, next) {
         })
         .catch((err) => {
             res.send(responses.responseDataFail(err));
+        })
+};
+
+exports.getMachineStatistic = function (req, res, next) {
+    api.getLogsStatistic(req.query.mac_id)
+        .then((result) => {
+            res.send(responses.responseDataOk(result));
+        })
+        .catch((error) => {
+            res.send(responses.responseDataFail(error));
         })
 };
