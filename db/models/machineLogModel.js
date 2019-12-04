@@ -20,13 +20,11 @@ const MachineLog = new mongoose.Schema({
         type: String,
         default: "undefined"
     },
-    date: {
-        type: Date,
-        default: Date.now()
-    },
     data: {
         type: mongoose.Schema.Types.Mixed,
     }
+}, {
+    timestamps: {createdAt: 'date'}
 });
 
 module.exports = mongoose.model("MachineLog", MachineLog);

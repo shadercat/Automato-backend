@@ -23,7 +23,7 @@ exports.isOwnerOfMachine = function (req, res, next) {
     api.getMachineData({mac_id: req.query.mac_id}).lean()
         .then((result1) => {
             if (result1 !== null) {
-                api.getUserData({_id: req.session.user.db_id, machines: result1._id.toString()}).lean()
+                api.getUserData({_id: req.session.user.db_id, machines: result1._id}).lean()
                     .then((result2) => {
                         if (result2 !== null) {
                             next();

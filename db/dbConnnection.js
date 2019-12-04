@@ -166,14 +166,16 @@ exports.getLogsStatistic = function (machine_id) {
         {
             $group: {
                 _id: {$month: "$date"},
-                average: {$avg: "$data.price"}
+                average: {$avg: "$data.price"},
+                sum: {$sum: "$data.price"}
             }
         },
         {
             $project: {
                 _id: 0,
                 month: "$_id",
-                average: "$average"
+                average: "$average",
+                sum: "$sum"
             }
         }
     ]);
