@@ -55,7 +55,7 @@ exports.deleteMachine = function (req, res, next) {
 };
 
 exports.saveLog = function (req, res, next) {
-    api.getRawMachineData({mac_id: req.body.mac_id}).lean()
+    api.getRawMachineData({mac_id: req.body.mac_id})
         .then((result) => {
             if (result && result.code === req.body.code) {
                 if (req.body.priority === "warning") {

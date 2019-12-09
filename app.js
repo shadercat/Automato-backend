@@ -8,6 +8,7 @@ const usersRouter = require('./routes/users');
 const apiRouter = require('./routes/api');
 const machineApi = require('./routes/machine');
 const adminRouter = require('./routes/admin');
+const companyRouter = require('./routes/companies');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const constants = require('./constants/paths');
@@ -43,7 +44,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    res.append('Access-Control-Allow-Origin', creditnalAllowSite);
+    res.append('Access-Control-Allow-Origin', constants.allowCreditnailsPaths);
     res.append('Access-Control-Allow-Methods', 'GET,POST,DELETE,PUT');
     res.append('Access-Control-Allow-Headers', 'Content-Type');
     res.append('Access-Control-Allow-Credentials', 'true');
@@ -54,6 +55,7 @@ app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/machine', machineApi);
 app.use('/admin', adminRouter);
+app.use('/company', companyRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

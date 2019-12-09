@@ -2,6 +2,7 @@ const express = require('express');
 const responses = require('../responseFactory');
 const error = require("../constants/Errors");
 const api = require('../db/dbConnnection');
+const constant = require('../constants/constant');
 
 // user api
 exports.getIsAuthorized = function (req, res, next) {
@@ -98,7 +99,10 @@ exports.deleteMachineHistory = function (req, res, next) {
 };
 
 exports.getMachineLogs = function (req, res, next) {
-    api.getMachineLogs({mac_id: req.query.mac_id}).lean()
+    api.getMachineLogs({mac_id: req.query.mac_id})
+        // .skip(constant.pageLimit * (req.query.page - 1))
+        // .limit(constant.pageLimit)
+        .sort({date: -1}).lean()
         .then((result) => {
             res.send(responses.responseDataOk(result));
         })
@@ -108,11 +112,21 @@ exports.getMachineLogs = function (req, res, next) {
 };
 
 exports.getMachineStatistic = function (req, res, next) {
+    let data = {};
     api.getLogsStatistic(req.query.mac_id)
         .then((result) => {
-            res.send(responses.responseDataOk(result));
+            api.getLogsProductStat(req.query.mac_id)
+                .then((result2) => {
+                    data.month = result;
+                    data.hour = result2;
+                    res.send(responses.responseDataOk(data));
+                })
+                .catch((err) => {
+                    res.send(responses.responseDataFail(error));
+                });
         })
         .catch((error) => {
             res.send(responses.responseDataFail(error));
         })
 };
+

@@ -17,10 +17,6 @@ const User = new mongoose.Schema({
         type: String,
         default: "owner"
     },
-    create_time: {
-        type: Date,
-        default: Date.now()
-    },
     machines: {
         type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Machines'}],
         default: []
@@ -32,7 +28,16 @@ const User = new mongoose.Schema({
     comp_description: {
         type: String,
         default: "Nothing there"
+    },
+    addData: {
+        type: mongoose.Schema.Types.Mixed,
+        default: {
+            number: "000-0000-0000-000",
+            location: "nothing"
+        }
     }
+}, {
+    timestamps: {createdAt: 'create_time'}
 });
 
 module.exports = mongoose.model('User', User);

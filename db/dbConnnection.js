@@ -69,6 +69,44 @@ function hash(text) {
         .update(text).digest('base64')
 }
 
+// Company API
+exports.getCompanies = function () {
+    return User.find({position_type: "company"})
+        .select({
+            password: 0,
+            machines: 0,
+            subscription_type: 0,
+            __v: 0
+        });
+};
+
+exports.getCompaniesCount = function () {
+    return User.countDocuments({position_type: "company"});
+};
+
+exports.getCompanyInfo = function (email) {
+    return User.aggregate([
+        {
+            $match: {
+                email: email,
+                position_type: "company"
+            }
+        },
+        {
+            $project: {
+                _id: "$_id",
+                name: "$name",
+                position_type: "$position_type",
+                create_time: "$create_time",
+                machines: {$size: "$machines"},
+                comp_description: "$comp_description",
+                email: "$email",
+                data: "$addData"
+            }
+        }
+    ])
+};
+
 // Machine API
 exports.createMachine = function (machineData) {
     var machine = {
@@ -174,6 +212,29 @@ exports.getLogsStatistic = function (machine_id) {
             $project: {
                 _id: 0,
                 month: "$_id",
+                average: "$average",
+                sum: "$sum"
+            }
+        }
+    ]);
+};
+
+exports.getLogsProductStat = function (machine_id) {
+    return MachineLog.aggregate([
+        {
+            $match: {mac_id: machine_id, op_type: "sell"}
+        },
+        {
+            $group: {
+                _id: {$hour: "$date"},
+                average: {$avg: "$data.price"},
+                sum: {$sum: "$data.price"}
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                hour: "$_id",
                 average: "$average",
                 sum: "$sum"
             }
