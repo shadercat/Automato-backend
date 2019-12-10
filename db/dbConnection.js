@@ -23,7 +23,7 @@ var db = mongoose.connect(process.env.DATABASESTRING, {
 // User API
 
 exports.createUser = function (userData) {
-    var user = {
+    let user = {
         name: userData.name,
         email: userData.email,
         password: hash(userData.password),
@@ -256,7 +256,8 @@ exports.getMachinesStat = function (machines) {
             $group: {
                 _id: "$mac_id",
                 average: {$avg: "$data.price"},
-                sum: {$sum: "$data.price"}
+                sum: {$sum: "$data.price"},
+                count: {$sum: 1}
             }
         },
         {$sort: {"_id": 1}}
