@@ -32,7 +32,7 @@ const User = new mongoose.Schema({
     addData: {
         type: mongoose.Schema.Types.Mixed,
         default: {
-            number: "000-0000-0000-000",
+            number: "0000000000",
             location: "nothing"
         }
     }

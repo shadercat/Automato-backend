@@ -43,3 +43,23 @@ exports.logoutFunc = function (req, res, next) {
         res.send(responses.responseSuccessFail(error.UNAUTHORIZED));
     }
 };
+
+exports.updateData = function (req, res, next) {
+    let data = {
+        name: req.body.name,
+        email: req.body.email,
+        comp_description: req.body.comp_description,
+        position_type: req.body.position_type,
+        addData: {
+            number: req.body.number,
+            location: req.body.location
+        }
+    };
+    api.updateUser({_id: req.session.user.db_id}, data)
+        .then((result) => {
+            res.send(responses.responseSuccessOk());
+        })
+        .catch((err) => {
+            res.send(responses.responseSuccessFail(error.DATABASE_FAIL));
+        })
+};

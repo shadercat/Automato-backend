@@ -1,12 +1,11 @@
-var crypto = require('crypto');
-var User = require('./models/userModel.js');
-var Machine = require('./models/machineModel');
-var MachineLog = require('./models/machineLogModel');
-var Admin = require('./models/adminModel');
-var mongoose = require('mongoose');
-var paths = require('../constants/paths');
+const crypto = require('crypto');
+const User = require('./models/userModel.js');
+const Machine = require('./models/machineModel');
+const MachineLog = require('./models/machineLogModel');
+const Admin = require('./models/adminModel');
+const mongoose = require('mongoose');
 const error = require('../constants/Errors');
-var db = mongoose.connect(process.env.DATABASESTRING, {
+const db = mongoose.connect(process.env.DATABASESTRING, {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true
@@ -37,6 +36,34 @@ exports.createUser = function (userData) {
 exports.getUserData = function (query) {
     return User.findOne(query)
         .select({'password': 0});
+};
+
+exports.getAdvUserData = function (email) {
+    return User.aggregate([
+        {$match: {email: email}},
+        {$unwind: "$machines"},
+        {
+            $lookup: {
+                from: "machines",
+                localField: "machines",
+                foreignField: "_id",
+                as: "mac_data"
+            }
+        },
+        {$unwind: "$mac_data"},
+        {
+            $group: {
+                _id: "$_id",
+                name: {$first: "$name"},
+                position_type: {$first: "$position_type"},
+                create_time: {$first: "$create_time"},
+                machines: {$sum: 1},
+                comp_description: {$first: "$comp_description"},
+                email: {$first: "$email"},
+                addData: {$first: "$addData"}
+            }
+        }
+    ])
 };
 
 exports.getUsersData = function (query) {
@@ -101,7 +128,7 @@ exports.getCompanyInfo = function (email) {
                 machines: {$size: "$machines"},
                 comp_description: "$comp_description",
                 email: "$email",
-                data: "$addData"
+                addData: "$addData"
             }
         }
     ])

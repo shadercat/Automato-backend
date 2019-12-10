@@ -19,6 +19,16 @@ exports.getUserData = function (req, res, next) {
         })
 };
 
+exports.getAdvUserData = function (req, res, next) {
+    api.getAdvUserData(req.session.user.email)
+        .then((data) => {
+            res.send(responses.responseDataOk(data));
+        })
+        .catch((err) => {
+            res.send(responses.responseDataFail(err));
+        })
+};
+
 exports.getMachinesData = function (req, res, next) {
     api.getUserData({email: req.session.user.email}).lean().then((data) => {
         api.getMachinesDataAgr({
