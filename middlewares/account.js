@@ -1,5 +1,5 @@
 const express = require('express');
-const api = require('../db/dbConnnection');
+const api = require('../db/dbConnection');
 const error = require('../constants/Errors');
 const responses = require('../responseFactory');
 

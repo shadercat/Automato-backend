@@ -1,7 +1,7 @@
 const express = require('express');
 const responses = require('../responseFactory');
 const error = require("../constants/Errors");
-const api = require('../db/dbConnnection');
+const api = require('../db/dbConnection');
 
 exports.login = function (req, res, next) {
     if (req.session.user) return res.send(responses.responseAuthorizeFail("already login as user"));
