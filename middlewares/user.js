@@ -130,3 +130,20 @@ exports.getMachineStatistic = function (req, res, next) {
         })
 };
 
+exports.getStatistic = function (req, res, next) {
+    api.getUserData({_id: req.session.user.db_id})
+        .then((result) => {
+            api.getMachinesStat(result.machines)
+                .then((result2) => {
+                    res.send(responses.responseDataOk(result2));
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.send(error.DATABASE_FAIL);
+                })
+        })
+        .catch((err) => {
+            console.log(err);
+            res.send(error.DATABASE_FAIL);
+        })
+};

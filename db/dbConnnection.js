@@ -107,6 +107,7 @@ exports.getCompanyInfo = function (email) {
     ])
 };
 
+
 // Machine API
 exports.createMachine = function (machineData) {
     var machine = {
@@ -176,7 +177,8 @@ exports.setMachineLog = function (macData) {
         priority: macData.priority,
         is_resolved: macData.is_resolved,
         descry: macData.descry,
-        data: macData.data
+        data: macData.data,
+        mac_db_id: macData.mac_db_id
     };
     return new MachineLog(log).save();
 };
@@ -239,6 +241,25 @@ exports.getLogsProductStat = function (machine_id) {
                 sum: "$sum"
             }
         }
+    ]);
+};
+
+exports.getMachinesStat = function (machines) {
+    return MachineLog.aggregate([
+        {
+            $match: {
+                mac_db_id: {$in: machines},
+                op_type: "sell"
+            }
+        },
+        {
+            $group: {
+                _id: "$mac_id",
+                average: {$avg: "$data.price"},
+                sum: {$sum: "$data.price"}
+            }
+        },
+        {$sort: {"_id": 1}}
     ]);
 };
 

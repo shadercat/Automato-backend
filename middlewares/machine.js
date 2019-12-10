@@ -63,6 +63,7 @@ exports.saveLog = function (req, res, next) {
                 }
                 let data = req.body;
                 data.data = JSON.parse(req.body.data);
+                data.mac_db_id = result._id;
                 api.setMachineLog(data)
                     .then((doc) => {
                         res.send(responses.responseSuccessOk());

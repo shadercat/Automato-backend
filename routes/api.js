@@ -9,6 +9,8 @@ router.get('/authorized', accessMiddleware.userAuth, apiMiddleware.getIsAuthoriz
 
 router.get('/userdata', accessMiddleware.userAuth, apiMiddleware.getUserData);
 
+router.get('/userstat', accessMiddleware.userAuth, apiMiddleware.getStatistic);
+
 //router.get('/companies', accessMiddleware.userAuth, apiMiddleware.getCompanies);
 
 // MACHINES

@@ -4,6 +4,10 @@ const MachineLog = new mongoose.Schema({
         type: String,
         required: true
     },
+    mac_db_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
     op_type: {
         type: String,
         required: true
