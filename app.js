@@ -12,7 +12,7 @@ const companyRouter = require('./routes/companies');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const constants = require('./constants/paths');
-const creditnalAllowSite = [`${process.env.CREDITNAILS_SITES}`];
+const credentialAllowSite = [`${process.env.CREDITNAILS_SITES}`];
 
 
 const app = express();
@@ -44,7 +44,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    res.append('Access-Control-Allow-Origin', creditnalAllowSite);
+    res.append('Access-Control-Allow-Origin', credentialAllowSite);
     res.append('Access-Control-Allow-Methods', 'GET,POST,DELETE,PUT');
     res.append('Access-Control-Allow-Headers', 'Content-Type');
     res.append('Access-Control-Allow-Credentials', 'true');

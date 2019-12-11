@@ -317,6 +317,10 @@ exports.updateAdmin = function (query, data) {
     return Admin.findOneAndUpdate(query, data, {new: true});
 };
 
+exports.getAdminInfo = function (query) {
+    return Admin.findOne(query).select({password: 0}).lean();
+};
+
 //
 exports.machineCount = function () {
     return Machine.countDocuments({});

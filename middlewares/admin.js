@@ -4,8 +4,8 @@ const error = require("../constants/Errors");
 const api = require('../db/dbConnection');
 
 exports.login = function (req, res, next) {
-    if (req.session.user) return res.send(responses.responseAuthorizeFail("already login as user"));
-
+    if (req.session.user && req.session.user.admin) return res.send(responses.responseAuthorizeFail("already login"));
+    if (req.session.user && (req.session.user.admin === null)) return res.send(responses.responseAuthorizeFail("already login as user"));
     api.checkAdmin(req.body)
         .then(function (user) {
             if (user) {
@@ -19,6 +19,26 @@ exports.login = function (req, res, next) {
             res.send(responses.responseAuthorizeFail(error));
         })
 
+};
+
+exports.isAuthorized = function (req, res, next) {
+    if (req.session.user && req.session.user.admin) {
+        return res.send(responses.responseAuthorizeOk());
+    } else if (req.session.user) {
+        return res.send(responses.responseAuthorizeFail(error.ALREADY_LOGIN_AS_USER));
+    } else {
+        return res.send(responses.responseAuthorizeFail(error.UNAUTHORIZED));
+    }
+};
+
+exports.getAdminData = function (req, res, next) {
+    api.getAdminInfo({_id: req.session.user.db_id})
+        .then((result) => {
+            res.send(responses.responseDataOk(result));
+        })
+        .catch((err) => {
+            res.send(responses.responseDataFail(error.DATABASE_FAIL));
+        })
 };
 
 exports.logout = function (req, res, next) {

@@ -28,8 +28,6 @@ exports.createNewMachine = function (req, res, next) {
 exports.deleteMachine = function (req, res, next) {
     api.getRawMachineData({mac_id: req.query.mac_id})
         .then((result1) => {
-            console.log(req.query);
-            console.log(result1);
             if (result1.owner.toString() === req.session.user.db_id && result1.code === req.query.code) {
                 api.deleteMachineLogs({mac_id: req.query.mac_id})
                     .then((result) => {

@@ -2,6 +2,17 @@ const express = require('express');
 const router = express.Router();
 const adminMiddleware = require('../middlewares/admin');
 const accessMiddleware = require('../middlewares/accessMiddleware');
+const credentialAdminSite = [`${process.env.ADMIN_SITE}`];
+
+
+router.use((req, res, next) => {
+    res.set('Access-Control-Allow-Origin', credentialAdminSite);
+    next();
+});
+
+router.get('/authorized', adminMiddleware.isAuthorized);
+
+router.get('admindata', accessMiddleware.adminAuth, adminMiddleware.getAdminData);
 
 router.post('/login', adminMiddleware.login);
 
